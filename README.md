@@ -1,3 +1,3 @@
-# recurrent_2018
+# bidirectional_2018
 
 To be created...
