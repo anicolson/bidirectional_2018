@@ -1,0 +1,7 @@
+Speaker identification accuracy at 0 dB: 8.89%
+Speaker identification accuracy at 5 dB: 14.05%
+Speaker identification accuracy at 10 dB: 27.54%
+Speaker identification accuracy at 15 dB: 48.02%
+Speaker identification accuracy at 20 dB: 69.68%
+Speaker identification accuracy at 25 dB: 84.84%
+Speaker identification accuracy at 30 dB: 92.54%

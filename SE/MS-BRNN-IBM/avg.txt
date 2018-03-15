@@ -1,0 +1,7 @@
+Av. SNR: 11.60dB (12.98dB ideal), av. SegSNR: 6.74dB (7.81dB ideal),   av. WPESQ: 1.58 (2.10 ideal), av. QSTI: 0.88 (0.90 ideal), SNR: 0dB.
+Av. SNR: 14.64dB (15.88dB ideal), av. SegSNR: 8.83dB (9.88dB ideal),   av. WPESQ: 1.82 (2.50 ideal), av. QSTI: 0.91 (0.92 ideal), SNR: 5dB.
+Av. SNR: 17.94dB (19.05dB ideal), av. SegSNR: 11.21dB (12.23dB ideal), av. WPESQ: 2.20 (2.96 ideal), av. QSTI: 0.94 (0.95 ideal), SNR: 10dB.
+Av. SNR: 21.51dB (22.50dB ideal), av. SegSNR: 13.89dB (14.88dB ideal), av. WPESQ: 2.71 (3.42 ideal), av. QSTI: 0.96 (0.97 ideal), SNR: 15dB.
+Av. SNR: 25.31dB (26.20dB ideal), av. SegSNR: 16.87dB (17.81dB ideal), av. WPESQ: 3.26 (3.82 ideal), av. QSTI: 0.98 (0.98 ideal), SNR: 20dB.
+Av. SNR: 29.25dB (30.08dB ideal), av. SegSNR: 20.10dB (21.01dB ideal), av. WPESQ: 3.72 (4.12 ideal), av. QSTI: 0.99 (0.99 ideal), SNR: 25dB.
+Av. SNR: 33.27dB (34.07dB ideal), av. SegSNR: 23.54dB (24.44dB ideal), av. WPESQ: 4.06 (4.33 ideal), av. QSTI: 1.00 (1.00 ideal), SNR: 30dB.

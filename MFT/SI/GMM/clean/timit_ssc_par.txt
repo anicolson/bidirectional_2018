@@ -1,0 +1,3 @@
+Tw = 32 ms, Ts = 16 ms, fs = 16000 Hz
+TIMIT path: D:/Datasets/timit
+Model path: D:/Dropbox/SPL/papers/bidirectional_2018/MFT/SI/GMM/model/timit_ssc_gmm.mat

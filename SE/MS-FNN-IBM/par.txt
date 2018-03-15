@@ -1,0 +1,4 @@
+Tw = 32 ms, Ts = 16 ms, fs = 16000 Hz
+Test path: ~/datasets/tf_timit_se
+Estimate path: /home/aaron/feat/MFT/IBM/IBM_hat/FNN/SE/TIMIT/MAG/FNN-1024-5
+SNR values (dB): 0 5 10 15 20 25 30 

@@ -1,0 +1,5 @@
+TIMIT path: ~/datasets/timit
+Noise path: ~/datasets/RSG-10/16KHz
+Save path: ~/datasets/tf_timit_si
+Validation fraction: 0.05
+SNR values (dB): 0 5 10 15 20 25 30 
