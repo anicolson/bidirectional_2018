@@ -1,4 +1,15 @@
-# bidirectional_2018
+# BRNN-IBM Estimator
+
+The implementation of the Bidirectional Recurrent Neural Network - Ideal Binary Mask (BRNN-IBM) estimator in [TensorFlow](https://www.tensorflow.org/). The BRNN uses Long-Short Term Memory (LSTM) cells. 
+
+## Prerequisites
+* [TensorFlow](https://www.tensorflow.org/)
+* [Python 3](https://www.python.org/)
+* [MATLAB R2017a](https://au.mathworks.com/products/matlab.htmll)
+* [VOICEBOX](http://www.ee.ic.ac.uk/hp/staff/dmb/voicebox/voicebox.html)
+* [addnoise](https://au.mathworks.com/matlabcentral/fileexchange/32136-add-noise?focused=5193299&tab=function)
+* [WPESQ](https://www.itu.int/rec/T-REC-P.862-200511-I!Amd2/en)
+* [PESQ MATLAB Wrapper](https://au.mathworks.com/matlabcentral/fileexchange/33820-pesq-matlab-wrapper)
 
 
 
