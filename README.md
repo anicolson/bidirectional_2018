@@ -24,4 +24,5 @@ subsets | Creates data subsets from the [TIMIT](https://catalog.ldc.upenn.edu/ld
 
 ## To Do:
 * Finish README.md
+* Code documentation.
 * Get permission to put QSTI into this repository.
