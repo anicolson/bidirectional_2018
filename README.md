@@ -9,6 +9,7 @@ The implementation of the Bidirectional Recurrent Neural Network - Ideal Binary 
 * [VOICEBOX](http://www.ee.ic.ac.uk/hp/staff/dmb/voicebox/voicebox.html) (for speech enhancement)
 * [WPESQ](https://www.itu.int/rec/T-REC-P.862-200511-I!Amd2/en) (for speech enhancement)
 * [PESQ MATLAB Wrapper](https://au.mathworks.com/matlabcentral/fileexchange/33820-pesq-matlab-wrapper) (for speech enhancement)
+* Unfortunetly, [QSTI](https://pdfs.semanticscholar.org/c0bc/1bab1872633e8885ab7ac12c1b3648effde7.pdf) can not be made availbale.
 
 Directory | Description
 --------| -----------  
@@ -25,4 +26,3 @@ subsets | Creates data subsets from the [TIMIT](https://catalog.ldc.upenn.edu/ld
 ## To Do:
 * Finish README.md
 * Code documentation.
-* Get permission to put QSTI into this repository.
