@@ -22,7 +22,7 @@ d.files = dir(strcat(noise_path,'/*.wav')); % noise files.
 train.files = [dir([timit_path,'/timit/train/*/*/si*.wav']); ...
     dir([timit_path,'/timit/train/*/*/sx*.wav'])]; % training files.
 test.files = [dir([timit_path,'/timit/test/*/*/si*.wav']); ...
-    dir([timit_path,'/timit/test/*/*/si*.wav'])]; % testing files.
+    dir([timit_path,'/timit/test/*/*/sx*.wav'])]; % testing files.
 
 %% CREATE VALIDATION SET
 p = randperm(length(train.files), round(length(train.files)*val_frac)); % index of validation files.
