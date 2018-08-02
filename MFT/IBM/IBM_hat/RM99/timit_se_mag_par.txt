@@ -1,3 +1,0 @@
-Tw = 32 ms, Ts = 16 ms, fs = 16000 Hz
-Test path: D:\Dropbox\tf_timit_se
-SNR values (dB): 0 5 10 15 20 25 30 

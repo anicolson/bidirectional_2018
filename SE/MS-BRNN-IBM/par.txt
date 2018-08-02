@@ -1,4 +1,0 @@
-Tw = 32 ms, Ts = 16 ms, fs = 16000 Hz
-Test path: ~/datasets/tf_timit_se
-Estimate path: ~/fist/home/aaron/model/MFT/IBM/IBM_hat/BRNN/SE/TIMIT/MAG/LSTMCell-512-3/model.ckpt
-SNR values (dB): 0 5 10 15 20 25 30 

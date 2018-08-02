@@ -1,7 +1,0 @@
-Accuracy 70.47%, SNR: 0dB.
-Accuracy 62.82%, SNR: 5dB.
-Accuracy 54.86%, SNR: 10dB.
-Accuracy 47.23%, SNR: 15dB.
-Accuracy 40.51%, SNR: 20dB.
-Accuracy 35.08%, SNR: 25dB.
-Accuracy 31.02%, SNR: 30dB.

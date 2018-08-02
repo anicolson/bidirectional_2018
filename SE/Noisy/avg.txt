@@ -1,7 +1,0 @@
-Av. SNR: 0.00dB,  av. SegSNR: 0.17dB,  av. WPESQ: 1.17, av. QSTI: 0.84, SNR: 0dB.
-Av. SNR: 5.00dB,  av. SegSNR: 3.29dB,  av. WPESQ: 1.31, av. QSTI: 0.89, SNR: 5dB.
-Av. SNR: 10.00dB, av. SegSNR: 6.84dB,  av. WPESQ: 1.56, av. QSTI: 0.93, SNR: 10dB.
-Av. SNR: 15.00dB, av. SegSNR: 10.64dB, av. WPESQ: 1.93, av. QSTI: 0.96, SNR: 15dB.
-Av. SNR: 20.00dB, av. SegSNR: 14.62dB, av. WPESQ: 2.46, av. QSTI: 0.98, SNR: 20dB.
-Av. SNR: 25.00dB, av. SegSNR: 18.55dB, av. WPESQ: 3.04, av. QSTI: 0.99, SNR: 25dB.
-Av. SNR: 30.00dB, av. SegSNR: 22.25dB, av. WPESQ: 3.56, av. QSTI: 1.00, SNR: 30dB.

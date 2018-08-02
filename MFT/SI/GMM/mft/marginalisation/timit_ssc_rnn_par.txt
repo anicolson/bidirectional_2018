@@ -1,4 +1,0 @@
-Tw = 32 ms, Ts = 16 ms, fs = 16000 Hz
-Test path: ~/datasets/tf_timit_si
-Model path: ~/Dropbox/bidirectional_2018/MFT/SI/GMM/model/timit_ssc_gmm.mat
-SNR values (dB): 0 5 10 15 20 25 30 

@@ -1,2 +1,0 @@
-Tw = 32 ms, Ts = 16 ms, fs = 16000 Hz, M = 32
-TIMIT path: D:/Datasets/timit

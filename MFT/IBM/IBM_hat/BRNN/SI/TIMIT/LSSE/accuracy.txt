@@ -1,7 +1,0 @@
-Accuracy: %94.61, version: LSTMCell-512-3, snr: 0, D/T:2018-03-12 13:24:19.
-Accuracy: %94.43, version: LSTMCell-512-3, snr: 5, D/T:2018-03-12 13:33:36.
-Accuracy: %94.54, version: LSTMCell-512-3, snr: 10, D/T:2018-03-12 13:42:52.
-Accuracy: %94.94, version: LSTMCell-512-3, snr: 15, D/T:2018-03-12 13:52:09.
-Accuracy: %95.56, version: LSTMCell-512-3, snr: 20, D/T:2018-03-12 14:01:25.
-Accuracy: %96.21, version: LSTMCell-512-3, snr: 25, D/T:2018-03-12 14:10:41.
-Accuracy: %96.83, version: LSTMCell-512-3, snr: 30, D/T:2018-03-12 14:19:58.

@@ -1,7 +1,0 @@
-Accuracy: %87.93, version: FNN-1024-5, snr: 0, D/T:2018-03-09 23:07:22.
-Accuracy: %86.51, version: FNN-1024-5, snr: 5, D/T:2018-03-09 23:07:33.
-Accuracy: %85.37, version: FNN-1024-5, snr: 10, D/T:2018-03-09 23:07:44.
-Accuracy: %84.88, version: FNN-1024-5, snr: 15, D/T:2018-03-09 23:07:56.
-Accuracy: %85.37, version: FNN-1024-5, snr: 20, D/T:2018-03-09 23:08:07.
-Accuracy: %86.69, version: FNN-1024-5, snr: 25, D/T:2018-03-09 23:08:18.
-Accuracy: %88.41, version: FNN-1024-5, snr: 30, D/T:2018-03-09 23:08:29.
