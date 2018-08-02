@@ -6,13 +6,12 @@ An implementation of a deep Residual Bidirectional Long-Short Term Memory - Idea
 * [Python 3](https://www.python.org/)
 * [MATLAB](https://www.mathworks.com/products/matlab.html)
 
-Directory | Description
+File | Description
 --------| -----------  
 MFT | The IBM Estimators and the [marginalisation-based ASI](https://maxwell.ict.griffith.edu.au/spl/publications/papers/icsps17_aaron.pdf) system.
-SE | Speech Enhancement methods.
-tf | Functions for creating [TensorFlow](https://www.tensorflow.org/) graphs and reading the data subsets.
-feat | MATLAB feature creation functions from [matlab_feat](https://github.com/anicolson/matlab_feat).
-subsets | Creates data subsets from the [TIMIT](https://catalog.ldc.upenn.edu/ldc93s1) speech dataset, and the [RSG-10](https://catalog.ldc.upenn.edu/ldc93s1http://www.steeneken.nl/wp-content/uploads/2014/04/RSG-10_Noise-data-base.pdf) noise dataset.
+train.py | Training, must give paths to the clean speech and noise training files.
+inf.py | Inference, outputs .mat MATLAB IBM estimates.
+run.py | Used to pass variables to inf.py. must give paths to the model, and the clean speech and noise testing files.
 
 ## Training and testing the BRNN-IBM Estimator for it IBM estimate accuracy:
 * Create the training, validation, and testing subsets uing functions in the [subsets](https://github.com/anicolson/bidirectional_2018/tree/master/subsets) directory.
