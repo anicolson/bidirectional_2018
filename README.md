@@ -1,12 +1,9 @@
-# BRNN-IBM Estimator
-The implementation of the Bidirectional Recurrent Neural Network - Ideal Binary Mask (BRNN-IBM) estimator in [TensorFlow](https://www.tensorflow.org/). The BRNN uses Long-Short Term Memory (LSTM) cells. 
+# ResBLSTM-IBM Estimator
+An implementation of a deep Residual Bidirectional Long-Short Term Memory - Ideal Binary Mask (ResBLSTM-IBM) estimator in [TensorFlow](https://www.tensorflow.org/). The Bidirectional Recurrent Neural Network (BRNN) from [1] has been replaced with a ResBLSTM. 
 
 ## Prerequisites
 * [TensorFlow](https://www.tensorflow.org/)
 * [Python 3](https://www.python.org/)
-
-## References
-A. Nicolson and K. K. Paliwal, "Bidirectional Long-Short Term Memory Network-based Estimation of Reliable Spectral Component Locations", Proceedings of Interspeech 2018.
 
 Directory | Description
 --------| -----------  
@@ -23,3 +20,6 @@ subsets | Creates data subsets from the [TIMIT](https://catalog.ldc.upenn.edu/ld
 ## To Do:
 * Finish README.md
 * Code documentation.
+
+## References
+[1] A. Nicolson and K. K. Paliwal, "Bidirectional Long-Short Term Memory Network-based Estimation of Reliable Spectral Component Locations", Proceedings of Interspeech 2018.
