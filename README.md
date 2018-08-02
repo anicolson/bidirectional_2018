@@ -4,12 +4,9 @@ The implementation of the Bidirectional Recurrent Neural Network - Ideal Binary 
 ## Prerequisites
 * [TensorFlow](https://www.tensorflow.org/)
 * [Python 3](https://www.python.org/)
-* [MATLAB R2017a](https://au.mathworks.com/products/matlab.htmll)
-* [addnoise](https://au.mathworks.com/matlabcentral/fileexchange/32136-add-noise?focused=5193299&tab=function)
-* [VOICEBOX](http://www.ee.ic.ac.uk/hp/staff/dmb/voicebox/voicebox.html) (for speech enhancement)
-* [WPESQ](https://www.itu.int/rec/T-REC-P.862-200511-I!Amd2/en) (for speech enhancement)
-* [PESQ MATLAB Wrapper](https://au.mathworks.com/matlabcentral/fileexchange/33820-pesq-matlab-wrapper) (for speech enhancement)
-* Unfortunetly, an implementation of [QSTI](https://pdfs.semanticscholar.org/c0bc/1bab1872633e8885ab7ac12c1b3648effde7.pdf) cannot be made availbale
+
+
+A. Nicolson and K. k. Paliwal, "Bidirectional Long-Short Term Memory Network-based Estimation of Reliable Spectral Component Locations", Proceedings of Interspeech 2018.
 
 Directory | Description
 --------| -----------  
