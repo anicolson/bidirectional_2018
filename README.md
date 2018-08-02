@@ -4,6 +4,7 @@ An implementation of a deep Residual Bidirectional Long-Short Term Memory - Idea
 ## Prerequisites
 * [TensorFlow](https://www.tensorflow.org/)
 * [Python 3](https://www.python.org/)
+* [MATLAB](https://www.mathworks.com/products/matlab.html)
 
 Directory | Description
 --------| -----------  
@@ -16,10 +17,6 @@ subsets | Creates data subsets from the [TIMIT](https://catalog.ldc.upenn.edu/ld
 ## Training and testing the BRNN-IBM Estimator for it IBM estimate accuracy:
 * Create the training, validation, and testing subsets uing functions in the [subsets](https://github.com/anicolson/bidirectional_2018/tree/master/subsets) directory.
 * Run the corresponding brnn.py python3 script for either the [speech enhancement dataset](https://github.com/anicolson/bidirectional_2018/tree/master/MFT/IBM/IBM_hat/BRNN/SE/TIMIT/MAG/brnn.py) or the [speaker identification dataset](https://github.com/anicolson/bidirectional_2018/blob/master/MFT/IBM/IBM_hat/BRNN/SI/TIMIT/LSSE/brnn.py). The IBM estimation accuracy will be stored in [accuracy.txt](https://github.com/anicolson/bidirectional_2018/blob/master/MFT/IBM/IBM_hat/BRNN/SI/TIMIT/LSSE/accuracy.txt).
-
-## To Do:
-* Finish README.md
-* Code documentation.
 
 ## References
 [1] A. Nicolson and K. K. Paliwal, "Bidirectional Long-Short Term Memory Network-based Estimation of Reliable Spectral Component Locations", Proceedings of Interspeech 2018.
