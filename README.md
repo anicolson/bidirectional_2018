@@ -5,8 +5,8 @@ The implementation of the Bidirectional Recurrent Neural Network - Ideal Binary 
 * [TensorFlow](https://www.tensorflow.org/)
 * [Python 3](https://www.python.org/)
 
-
-A. Nicolson and K. k. Paliwal, "Bidirectional Long-Short Term Memory Network-based Estimation of Reliable Spectral Component Locations", Proceedings of Interspeech 2018.
+## References
+A. Nicolson and K. K. Paliwal, "Bidirectional Long-Short Term Memory Network-based Estimation of Reliable Spectral Component Locations", Proceedings of Interspeech 2018.
 
 Directory | Description
 --------| -----------  
