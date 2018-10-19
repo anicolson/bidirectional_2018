@@ -2,7 +2,7 @@
 # DATE:           2018
 # AUTHOR:         Aaron Nicolson
 # AFFILIATION:    Signal Processing Laboratory, Griffith University
-# BRIEF:          ResBLSTM IBM Estimator inference. Saves to MATLAB .mat file.
+# BRIEF:          ResLSTM IBM Estimator inference. 
 
 import tensorflow as tf
 from tensorflow.python.data import Dataset, Iterator
@@ -10,30 +10,44 @@ import numpy as np
 from datetime import datetime
 import scipy.io.wavfile
 import scipy.io as spio
-import feat, os, batch, res, argparse, random, math, time, sys, pickle
+import  os, argparse, random, math, time, sys, pickle
+from lib import feat
+from lib import batch
+from lib import residual
+
 np.set_printoptions(threshold=np.nan)
 
-def IBM_HAT(test_clean, test_noise, out_path, model_path, epoch, snr_list, gpu):
+## UPPER ENDPOINT SCALING FACTOR VALUES
+# INT	RHO
+#  10   0.2944
+#  20   0.1472
+#  30   0.0981
+#  40   0.0736
 
-	print('DeepXi: ResLSTM a priori SNR estimator')
+def DeepXi(test_noisy, out_path, model_path, epoch, gpu, opt):
+
+	print('ResLSTM IBM estimator')
 
 	## OPTIONS
-	version = 'ResBLSTM_IBM_hat' # model version.
+	version = 'c1.0' # model version.
 	scaling = 0.0981 # scaling factor for SNR dB intertest size.
 	print("Scaling factor: %g." % (scaling))
 	print("%s on GPU:%s for epoch %d." % (version, gpu, epoch)) # print version.
-	out_path = out_path + '/xi_hat'
+	if opt is 'ibm': out_path = out_path + '/ibm'
+	if opt is 'y': 	out_path = out_path + '/y'
+	par_iter = 256 # dynamic_rnn/bidirectional_dynamic_rnn parallel iterations.
 	if not os.path.exists(out_path): os.makedirs(out_path) # make output directory.
 
 	## NETWORK PARAMETERS
+	blocks = ['I2'] + ['B3']*5 + ['O'] # residual blocks. e.g.: ['I2'] + ['B3']*5 + ['O'].
 	cell_size = 512 # cell size of forward & backward cells.
-	rnn_depth = 5 # number of RNN layers.
-	bidirectional = True # use a Bidirectional Recurrent Neural Network.
-	cell_proj = 256 # output size of the cell projection weight (None for no projection).
-	residual = 'add' # residual connection either by addition ('add') or concatenation ('concat').
+	cell_proj = None # output size of the cell projection weight (None for no projection).
+	cell_type = 'LSTMCell' # RNN cell type.
+	bidi = False # use a Bidirectional Recurrent Neural Network.
+	layer_norm = False # layer normalisation in LSTM block.
+	res_con = 'add' # residual connection either by addition ('add') or concatenation ('concat').
 	res_proj = None # output size of the residual projection weight (None for no projection).
-	peepholes = False # use peephole connections.
-	input_layer = True # use an input layer.
+	peep = False # use peephole connections.
 	input_size = 512 # size of the input layer output.
 
 	## FEATURES
@@ -58,13 +72,19 @@ def IBM_HAT(test_clean, test_noise, out_path, model_path, epoch, snr_list, gpu):
 	## PLACEHOLDERS
 	s_ph = tf.placeholder(tf.int16, shape=[None, None]) # clean speech placeholder.
 	d_ph = tf.placeholder(tf.int16, shape=[None, None]) # noise placeholder.
+	x_ph = tf.placeholder(tf.int16, shape=[None, None]) # noisy speech placeholder.
 	s_len_ph = tf.placeholder(tf.int32, shape=[None]) # clean speech sequence length placeholder.
 	d_len_ph = tf.placeholder(tf.int32, shape=[None]) # noise sequence length placeholder.
+	x_len_ph = tf.placeholder(tf.int32, shape=[None]) # noisy speech sequence length placeholder.
 	snr_ph = tf.placeholder(tf.float32, shape=[None]) # SNR placeholder.
+	x_MS_ph = tf.placeholder(tf.float32, shape=[None, None, input_dim]) # noisy speech MS placeholder.
+	x_MS_2D_ph = tf.placeholder(tf.float32, shape=[None, input_dim]) # noisy speech MS placeholder.
+	x_PS_ph = tf.placeholder(tf.float32, shape=[None, input_dim]) # noisy speech PS placeholder.
+	x_MS_len_ph = tf.placeholder(tf.int32, shape=[None]) # noisy speech MS sequence length placeholder.
+	mapped_local_xi_dB_ph = tf.placeholder(tf.float32, shape=[None, input_dim]) # mapped local a priori SNR dB placeholder.
 
 	## TEST SET
-	test_clean, test_clean_len, test_snr, test_fnames = batch._test_set(test_clean, '*.wav', snr_list) # clean test waveforms and lengths.
-	test_noise, test_noise_len, _, _ = batch._test_set(test_noise, '*.wav', snr_list) # noise test waveforms and lengths.
+	test_noisy, test_noisy_len, test_snr, test_fnames = batch._test_set(test_noisy, '*.wav', [0]) # noisy speech test waveforms and lengths.
 
 	## LOG_10
 	def log10(x):
@@ -75,9 +95,9 @@ def IBM_HAT(test_clean, test_noise, out_path, model_path, epoch, snr_list, gpu):
 	## FEATURE EXTRACTION FUNCTION
 	def feat_extr(s, d, s_len, d_len, Q, Nw, Ns, NFFT, fs, P, nconst, scaling):
 		'''
-		Computes Magnitude Spectrum (MS) input features, and the a priori SNR target.
-		The sequences are padded, with seq_len providing the length of each sequence
-		without padding.
+		Computes Magnitude Spectrum (MS) input features, and the local a priori SNR 
+		dB target. The sequences are padded, with seq_len providing the length of 
+		each sequence without padding.
 
 		Inputs:
 			s - clean waveform (dtype=tf.int32).
@@ -91,25 +111,26 @@ def IBM_HAT(test_clean, test_noise, out_path, model_path, epoch, snr_list, gpu):
 			fs - sampling frequency (Hz).
 			P - padded waveform length (samples).
 			nconst - normalization constant.
-			scaling - scaling factor for SNR dB intertest size.
+			scaling - scaling factor for SNR dB interval size.
 
 		Outputs:
-			x_MS - padded noisy single-sided magnitude spectrum.
-			xi_dB_mapped - mapped a priori SNR dB.	
+			s_MS - padded noisy single-sided magnitude spectrum.
+			mapped_local_xi_dB- mapped local a priori SNR dB.	
 			seq_len - length of each sequence without padding.
 		'''
 		(s, x, d) = tf.map_fn(lambda z: feat.addnoisepad(z[0], z[1], z[2], z[3], z[4],
 			P, nconst), (s, d, s_len, d_len, Q), dtype=(tf.float32, tf.float32,
 			tf.float32)) # padded noisy waveform, and padded clean waveform.
 		seq_len = feat.nframes(s_len, Ns) # length of each sequence.
-		s_MS = feat.stms(s, Nw, Ns, NFFT) # clean magnitude spectrum.
+		s_MS = feat.stms(s, Nw, Ns, NFFT) # clean speech magnitude spectrum.
 		d_MS = feat.stms(d, Nw, Ns, NFFT) # noise magnitude spectrum.
-		x_MS = feat.stms(x, Nw, Ns, NFFT) # noisy magnitude spectrum.
-		xi = tf.div(tf.square(s_MS), tf.add(tf.square(d_MS), 1e-12)) # a-priori-SNR.
-		xi_dB = tf.multiply(10.0, tf.add(log10(xi), 1e-12)) # a-priori-SNR in dB.
-		xi_db_mapped = tf.div(1.0, tf.add(1.0, tf.exp(tf.multiply(-scaling, xi_dB)))) # scaled a-priori-SNR.
-		xi_db_mapped = tf.boolean_mask(xi_db_mapped, tf.sequence_mask(seq_len)) # convert to 2D.
-		return (x_MS, xi_db_mapped, seq_len)
+		x_MS = feat.stms(x, Nw, Ns, NFFT) # noisy speech magnitude spectrum.
+		x_PS = feat.stps(x, Nw, Ns, NFFT) # noisy speech phase spectrum.
+		local_xi = tf.div(tf.square(s_MS), tf.add(tf.square(d_MS), 1e-12)) # local a priori SNR.
+		local_xi_dB = tf.multiply(10.0, tf.add(log10(local_xi), 1e-12)) # local a priori SNR dB.
+		mapped_local_xi_dB = tf.div(1.0, tf.add(1.0, tf.exp(tf.multiply(-scaling, local_xi_dB)))) # mapped local a priori SNR dB.
+		mapped_local_xi_dB = tf.boolean_mask(mapped_local_xi_dB, tf.sequence_mask(seq_len)) # convert to 2D.
+		return (x_MS, mapped_local_xi_dB, seq_len, x_PS)
 
 	## FEATURE GRAPH
 	print('Preparing graph...')
@@ -119,33 +140,50 @@ def IBM_HAT(test_clean, test_noise, out_path, model_path, epoch, snr_list, gpu):
 
 	## RESNET
 	parser = argparse.ArgumentParser()
+	parser.add_argument('--blocks', default=blocks, type=list, help='Residual blocks.')
 	parser.add_argument('--cell_size', default=cell_size, type=int, help='BLSTM cell size.')
-	parser.add_argument('--rnn_depth', default=rnn_depth, type=int, help='Number of RNN layers.')
-	parser.add_argument('--bidirectional', default=bidirectional, type=bool, help='Use a Bidirectional Recurrent Neural Network.')
 	parser.add_argument('--cell_proj', default=cell_proj, type=int, help='Output size of the cell projection matrix (None for no projection).')
-	parser.add_argument('--residual', default=residual, type=str, help='Residual connection. Either addition or concatenation.')
-	parser.add_argument('--peepholes', default=peepholes, type=bool, help='Use peephole connections.')
-	parser.add_argument('--input_layer', default=input_layer, type=bool, help='Use an input layer.')
+	parser.add_argument('--cell_type', default=cell_type, type=str, help='RNN cell type.')
+	parser.add_argument('--peep', default=peep, type=bool, help='Use peephole connections.')
+	parser.add_argument('--bidi', default=bidi, type=bool, help='Use a Bidirectional Recurrent Neural Network.')
+	parser.add_argument('--layer_norm', default=layer_norm, type=bool, help='Layer normalisation in LSTM block.')
+	parser.add_argument('--res_con', default=res_con, type=str, help='Residual connection. Either addition or concatenation.')
+	parser.add_argument('--res_proj', default=res_proj, type=int, help='Residual projection size (None for no projection).')
 	parser.add_argument('--input_size', default=input_size, type=int, help='Input layer output size.')
+	parser.add_argument('--conv_caus', default=True, type=bool, help='Causal convolution.')
 	parser.add_argument('--verbose', default=True, type=bool, help='Print network.')
-	parser.add_argument('--parallel_iterations', default=512, type=int, help='Number of parallel iterations.')
+	parser.add_argument('--par_iter', default=par_iter, type=int, help='Number of parallel iterations.')
 	args = parser.parse_args()
-	y_hat = res.ResNet(feature[0], feature[2], num_outputs, args)
+	y_hat = residual.Residual(x_MS_ph, x_MS_len_ph, None, num_outputs, args)
 
 	## LOSS & OPTIMIZER
-	loss = res.loss(feature[1], y_hat, 'sigmoid_xentropy')
+	loss = residual.loss(mapped_local_xi_dB_ph, y_hat, 'sigmoid_xentropy')
 	total_loss = tf.reduce_mean(loss)
-	trainer, _ = res.optimizer(loss, optimizer='adam')
-
-	## SYNTHESIS PLACEHOLDERS
-	xi_db_mapped_hat_ph = tf.placeholder(tf.float32, shape=[None, None]) # mapped a priori SNR dB placeholder.
+	trainer, _ = residual.optimizer(loss, optimizer='adam')
 	
-	## IBM HAT
-	xi_db_mapped_hat = tf.sigmoid(xi_db_mapped_hat_ph) # mapped a priori SNR dB estimate.
+	## A PRIORI SNR ESTIMATE GRAPH
+	xi_db_mapped_hat = tf.sigmoid(mapped_local_xi_dB_ph) # mapped a priori SNR dB estimate.
 	xi_dB_hat = tf.subtract(tf.div(1.0, xi_db_mapped_hat), 1.0) # a priori SNR dB estimate.
 	xi_dB_hat = tf.negative(tf.div(tf.log(tf.maximum(xi_dB_hat, 1e-12)), scaling)) # a priori SNR dB estimate.
 	xi_hat = tf.pow(10.0, tf.div(xi_dB_hat, 10.0)) # a priori SNR estimate.
-	ibm_hat = tf.greater(xi_hat, 1)	# IBM hat.
+	
+	## ANALYSIS
+	x = tf.div(tf.cast(tf.slice(tf.squeeze(x_ph), [0], [tf.squeeze(x_len_ph)]), tf.float32), nconst) # remove padding and normalise.
+	x_DFT = feat.stft(x, Nw, Ns, NFFT) # noisy speech single-sided short-time Fourier transform.
+	x_MS_3D = tf.expand_dims(tf.abs(x_DFT), 0) # noisy speech single-sided magnitude spectrum.
+	x_MS = tf.abs(x_DFT) # noisy speech single-sided magnitude spectrum.
+	x_PS = tf.angle(x_DFT) # noisy speech single-sided phase spectrum.
+	x_seq_len = feat.nframes(x_len_ph, Ns) # length of each sequence.
+
+	## ENHANCEMENT
+	IBM = tf.cast(tf.greater(xi_hat, 1), tf.float32) # IBM estimate.
+	s_hat_MS = tf.multiply(x_MS_2D_ph, IBM) # enhanced speech single-sided magnitude spectrum.
+	
+	## SYNTHESIS GRAPH
+	y_DFT = tf.cast(s_hat_MS, tf.complex64) * tf.exp(1j * tf.cast(x_PS_ph, tf.complex64)) # enhanced speech single-sided short-time Fourier transform.
+	y = tf.contrib.signal.inverse_stft(y_DFT, Nw, Ns, NFFT, 
+		tf.contrib.signal.inverse_stft_window_fn(Ns, 
+		forward_window_fn=tf.contrib.signal.hamming_window)) # synthesis.
 
 	## SAVE VARIABLES
 	saver = tf.train.Saver()
@@ -155,16 +193,24 @@ def IBM_HAT(test_clean, test_noise, out_path, model_path, epoch, snr_list, gpu):
 
 		## LOAD MODEL
 		saver.restore(sess, model_path + '/' + version + '/epoch-' + str(epoch)) # load model from epoch.
+		for j in range(len(test_noisy_len)):
+			x_MS_out = sess.run(x_MS, feed_dict={x_ph: [test_noisy[j]], 
+				x_len_ph: [test_noisy_len[j]]}) 
+			x_MS_3D_out = sess.run(x_MS_3D, feed_dict={x_ph: [test_noisy[j]], 
+				x_len_ph: [test_noisy_len[j]]}) 
+			x_PS_out = sess.run(x_PS, feed_dict={x_ph: [test_noisy[j]], 
+				x_len_ph: [test_noisy_len[j]]}) 
+			x_seq_len_out = sess.run(x_seq_len, feed_dict={x_len_ph: [test_noisy_len[j]]}) 
 
-		for snr in snr_list:
-			for j in range(len(test_clean_len)):
-
-				xi_db_mapped_hat_out = sess.run(y_hat, feed_dict={s_ph: [test_clean[j]], d_ph:
-					[test_noise[j]], s_len_ph: [test_clean_len[j]], d_len_ph:
-					[test_noise_len[j]], snr_ph: [snr]}) # mapped a priori SNR dB estimate.
+			mapped_local_xi_dB_out = sess.run(y_hat, feed_dict={x_MS_ph: x_MS_3D_out, x_MS_len_ph: x_seq_len_out}) # mapped a priori SNR dB estimate.
 				
-				ibm_hat_out = sess.run(ibm_hat, feed_dict={xi_db_mapped_hat_ph: xi_db_mapped_hat_out}) # a priori SNR output.
-				spio.savemat(out_path + '/' + test_fnames[j] + '_' + str(snr) + 'dB', {'ibm_hat':ibm_hat_out})
+			if opt is 'ibm':
+				ibm_hat_out = sess.run(IBM, feed_dict={mapped_local_xi_dB_ph: mapped_local_xi_dB_out}) # a priori SNR output.
+				spio.savemat(out_path + '/' + test_fnames[j], {'ibm_hat':ibm_hat_out})
 
-				print("Inference: %3.2f%% complete for %g dB.       " % (100*(j/len(test_clean_len)), snr), end="\r")
+			if opt is 'y':
+				y_out = sess.run(y, feed_dict={x_MS_2D_ph: x_MS_out, x_PS_ph: x_PS_out, 
+					x_MS_len_ph: x_seq_len_out, mapped_local_xi_dB_ph: mapped_local_xi_dB_out}) # enhanced speech output.		
+				scipy.io.wavfile.write(out_path + '/' + test_fnames[j] + '.wav', fs, y_out)
+			print("Inference: %3.2f%% complete.       " % (100*(j/len(test_noisy_len))), end="\r")
 	print('Inference complete.')
