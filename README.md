@@ -16,8 +16,8 @@ The following clean speech and noise was used to train the given model: <br />
 - The CSTR VCTK Corpus (42,015 utterances).
 - The *si* *sx* training sets from the TIMIT corpus (3,696 utterances). <br />
 **Noise**
-- The QUT-NOISE dataset. 
 - The Nonspeech dataset.
+- The QUT-NOISE dataset. 
 - The Environmental Background Noise dataset.
 - The noise set from the MUSAN corpus.
 - Multiple [FreeSound](https://freesound.org/) packs (147, 199, 247, 379, 622, 643, 1,133, 1,563, 1,840, 2,432, 4,366, 4,439, 15,046, 15,598, 21,558). 
