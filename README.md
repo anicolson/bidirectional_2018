@@ -11,12 +11,10 @@ A trained model can be downloaded from [here](https://www.dropbox.com/s/ecp4a3or
 
 ## Training 
 The following clean speech and noise was used to train the given model:
-
 **Clean Speech**
 - The *train-clean-100* set from the the Librispeech corpus (28,539 utterances).
 - The CSTR VCTK Corpus (42,015 utterances).
 - The *si* *sx* training sets from the TIMIT corpus (3,696 utterances).
-
 **Noise**
 - The QUT-NOISE dataset. 
 - The Nonspeech dataset.
