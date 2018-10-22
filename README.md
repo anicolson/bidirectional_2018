@@ -1,5 +1,5 @@
 # ResLSTM-IBM Estimator
-An implementation of a deep Residual Long-Short Term Memory - Ideal Binary Mask (ResBLSTM-IBM) estimator in [TensorFlow](https://www.tensorflow.org/). The Bidirectional Recurrent Neural Network (BRNN) from [1] has been replaced with a ResLSTM. 
+An implementation of a deep Residual Long-Short Term Memory - Ideal Binary Mask (ResBLSTM-IBM) estimator in [TensorFlow](https://www.tensorflow.org/). The Bidirectional Recurrent Neural Network (BRNN) from [1] has been replaced with a ResLSTM. The ResLSTM consists of 5 blocks, with a cell size of 512 for each LSTM cell.
 
 ## Prerequisites
 * [TensorFlow](https://www.tensorflow.org/)
@@ -12,12 +12,12 @@ A trained model can be downloaded from [here](https://www.dropbox.com/s/ecp4a3or
 ## Training 
 The following clean speech and noise was used to train the given model:
 
-### Clean Speech:
+**Clean Speech**
 - The *train-clean-100* set from the the Librispeech corpus (28,539 utterances).
 - The CSTR VCTK Corpus (42,015 utterances).
 - The *si* *sx* training sets from the TIMIT corpus (3,696 utterances).
 
-### Noise:
+**Noise**
 - The QUT-NOISE dataset. 
 - The Nonspeech dataset.
 - The Environmental Background Noise dataset.
