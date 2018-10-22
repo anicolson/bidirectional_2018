@@ -14,7 +14,7 @@ The following clean speech and noise was used to train the given model: <br />
 #### Clean Speech
 - The *train-clean-100* set from the the Librispeech corpus (28,539 utterances).
 - The CSTR VCTK Corpus (42,015 utterances).
-- The *si* *sx* training sets from the TIMIT corpus (3,696 utterances). <br />
+- The *si* and *sx* training sets from the TIMIT corpus (3,696 utterances). <br />
 #### Noise
 - The Nonspeech dataset.
 - The QUT-NOISE dataset. 
