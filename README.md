@@ -10,13 +10,11 @@ An implementation of a deep Residual Long-Short Term Memory - Ideal Binary Mask 
 A trained model can be downloaded from [here](https://www.dropbox.com/s/ecp4a3orzht3j2h/epoch-15.zip?dl=0). The model was trained with a sampling rate of 16 kHz.
 
 ## Training 
-The following clean speech and noise was used to train the given model:
-
+The following clean speech and noise was used to train the given model: <br />
 **Clean Speech**
 - The *train-clean-100* set from the the Librispeech corpus (28,539 utterances).
 - The CSTR VCTK Corpus (42,015 utterances).
-- The *si* *sx* training sets from the TIMIT corpus (3,696 utterances).
-
+- The *si* *sx* training sets from the TIMIT corpus (3,696 utterances). <br />
 **Noise**
 - The QUT-NOISE dataset. 
 - The Nonspeech dataset.
