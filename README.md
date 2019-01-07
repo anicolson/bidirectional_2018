@@ -1,4 +1,4 @@
-# ResBLSTM IBM Estimator
+# IBM Estimated Using DeepXi
 
 [DeepXi](https://github.com/anicolson/DeepXi) is now used instead of the bidirectional recurrent neural network (BRNN) from [1]. [DeepXi](https://github.com/anicolson/DeepXi) is a deep residual bidirectional long-short term memory (ResBLSTM) network *a priori* SNR estimator implemented in [TensorFlow](https://www.tensorflow.org/). The *a priori* SNR estimated by [DeepXi](https://github.com/anicolson/DeepXi) is used to compute an ideal binary mask (IBM) estimate. 
 
