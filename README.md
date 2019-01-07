@@ -1,6 +1,6 @@
 # ResBLSTM IBM Estimator
 
-An implementation of a deep residual bidirectional long-short term memory ideal binary mask (ResBLSTM-IBM) estimator in [TensorFlow](https://www.tensorflow.org/). The bidirectional recurrent neural network (BRNN) from [1] has been replaced with a ResBLSTM. The ResBLSTM consists of 5 blocks, with a cell size of 512 for each LSTM cell. The ResBLSTM-IBM estimator can be found [here](https://github.com/anicolson/DeepXi).
+[DeepXi](https://github.com/anicolson/DeepXi) is now used instead of the bidirectional recurrent neural network (BRNN) from [1]. [DeepXi](https://github.com/anicolson/DeepXi) is a deep residual bidirectional long-short term memory (ResBLSTM) network *a priori* SNR estimator implemented in [TensorFlow](https://www.tensorflow.org/). The *a priori* SNR estimated by [DeepXi](https://github.com/anicolson/DeepXi) is used to compute an ideal binary mask (IBM) estimate. 
 
 ## How to Use DeepXi for IBM estimation
 The [DeepXi](https://github.com/anicolson/DeepXi) script has a variable called *out_type* on line 54. Set this to 'gain'. Also set the variable *gain* on line 62 to 'ibm', and IBM estimates for given noisy speech will be placed in the *output* directory.
