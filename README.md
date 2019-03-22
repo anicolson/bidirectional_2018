@@ -1,6 +1,6 @@
 # IBM Estimated Using Deep Xi
 
-[Deep Xi](https://github.com/anicolson/DeepXi) is now used instead of the bidirectional recurrent neural network (BRNN) from [1]. [DeepXi](https://github.com/anicolson/DeepXi) is a deep learning approach to *a priori* SNR estimation, implemented in [TensorFlow](https://www.tensorflow.org/). The *a priori* SNR estimated by [Deep Xi](https://github.com/anicolson/DeepXi) is used to compute an ideal binary mask (IBM) estimate. 
+[Deep Xi](https://github.com/anicolson/DeepXi) is now used instead of the bidirectional recurrent neural network (BRNN) from [1]. [Deep Xi](https://github.com/anicolson/DeepXi) is a deep learning approach to *a priori* SNR estimation, implemented in [TensorFlow](https://www.tensorflow.org/). The *a priori* SNR estimated by [Deep Xi](https://github.com/anicolson/DeepXi) is used to compute an ideal binary mask (IBM) estimate. 
 
 **[Deep Xi](https://github.com/anicolson/DeepXi) can be found [here](https://github.com/anicolson/DeepXi).**
 
